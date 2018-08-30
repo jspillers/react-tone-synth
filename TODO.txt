@@ -1,0 +1,4 @@
+* make click and drag toggle of cells be in activate or deactive "mode" based on the state of the first cell clicked
+* add UIs for all the other premade synth types in tone.js
+* add markov chain based rhythm section
+
