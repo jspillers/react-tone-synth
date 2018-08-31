@@ -60,13 +60,8 @@ class ConnectedDial extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const dialProps = get(state, `${ownProps.parentName}.dials.${ownProps.name}`)
-
-  if (dialProps === undefined) {
-    return { dialValue: 0 }
-  } else {
-    return { dialValue: dialProps.dialValue }
-  }
+  const value = get(state, `${ownProps.parentName}.${ownProps.name}`)
+  return { dialValue: value === undefined ? 0 : value }
 }
 
 const mapDispatchToProps = dispatch => {

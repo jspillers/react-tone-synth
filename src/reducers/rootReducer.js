@@ -14,7 +14,7 @@ import initialState from "./initialState"
 import Tone from "tone"
 import ToneSynth from "../synth/ToneSynth"
 
-const synth = new ToneSynth()
+const synth = new ToneSynth(initialState)
 
 // copies the sequencer cell state, iterates through the copy of all sequencer cells,
 // and potentially alters the state of each cell based on the contents/behavior of `func`
@@ -38,7 +38,7 @@ const rootReducer = (state = initialState, action) => {
 
       return dotProp.set(
         state,
-        `${action.payload.parentName}.dials.${action.payload.name}.dialValue`,
+        `${action.payload.parentName}.${action.payload.name}`,
         action.payload.dialValue
       )
 
@@ -47,7 +47,7 @@ const rootReducer = (state = initialState, action) => {
 
       return dotProp.set(
         state,
-        `${action.payload.parentName}.selects.${action.payload.name}.selectValue`,
+        `${action.payload.parentName}.${action.payload.name}`,
         action.payload.selectValue
       )
 
@@ -80,8 +80,7 @@ const rootReducer = (state = initialState, action) => {
           } else {
             rows[rowKey][colKey].isHighlighted = false
           }
-          }
-        )
+        })
       )
 
     case BPM_UPDATE:
@@ -92,10 +91,9 @@ const rootReducer = (state = initialState, action) => {
       return dotProp.set(
         state, "sequencer.sequencerRows",
         forAllCells(state, (rows, rowKey, colKey, ri, ci) => {
-            let cell = rows[rowKey][colKey]
-            cell.isActive = false
-          }
-        )
+          let cell = rows[rowKey][colKey]
+          cell.isActive = false
+        })
       )
 
     default:

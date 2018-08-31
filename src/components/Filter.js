@@ -93,12 +93,7 @@ ConnectedFilter.propTypes = {
 
 const mapStateToProps = (state, ownProps) => {
   const _filterType = get(state, "filter.filterType")
-
-  if (_filterType === undefined) {
-    return { filterType: "lowpass" }
-  } else {
-    return { filterType: _filterType }
-  }
+  return { filterType: _filterType === undefined ? "lowpass" : _filterType}
 }
 
 const mapDispatchToProps = dispatch => {

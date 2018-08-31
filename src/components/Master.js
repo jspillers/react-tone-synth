@@ -9,16 +9,16 @@ class Master extends React.Component {
         <h4>FX</h4>
         <div className="row">
           <div className="col-md-2 col-md-offset-1">
-            <Dial name={"driveSend"} displayName={"Drive"} parentName={this.props.name} min={-100} max={0} />
+            <Dial name={"drive"} displayName={"Drive"} parentName={this.props.name} min={0} max={1} />
           </div>
           <div className="col-md-2">
-            <Dial name={"reverbSend"} displayName={"Reverb"} parentName={this.props.name} min={-100} max={0} />
+            <Dial name={"reverb"} displayName={"Reverb"} parentName={this.props.name} min={0} max={1} />
           </div>
           <div className="col-md-2">
-            <Dial name={"delaySend"} displayName={"Delay"} parentName={this.props.name} min={-100} max={0} />
+            <Dial name={"delay"} displayName={"Delay"} parentName={this.props.name} min={0} max={1} />
           </div>
           <div className="col-md-2">
-            <Dial name={"chorusSend"} displayName={"Chorus"} parentName={this.props.name} min={-100} max={0} />
+            <Dial name={"chorus"} displayName={"Chorus"} parentName={this.props.name} min={0} max={1} />
           </div>
           <div className="col-md-2">
             <Dial name={"volume"} displayName={"Volume"} parentName={this.props.name} min={-100} max={0} />

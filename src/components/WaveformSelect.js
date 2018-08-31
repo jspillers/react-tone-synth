@@ -43,13 +43,8 @@ class ConnectedWaveformSelect extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const selectProps = get(state, `${ownProps.parentName}.selects.${ownProps.name}`)
-
-  if (selectProps === undefined) {
-    return { selectValue: 0 }
-  } else {
-    return { selectValue: selectProps.selectValue }
-  }
+  const value = get(state, `${ownProps.parentName}.${ownProps.name}`)
+  return { selectValue: value === undefined ? 0 : value }
 }
 
 const mapDispatchToProps = dispatch => {

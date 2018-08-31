@@ -2,9 +2,8 @@ import Tone from "tone"
 
 class ToneSynth {
 
-  constructor() {
-    // "lowpass", "highpass", "bandpass", "lowshelf", "highshelf", "notch", "allpass", or "peaking"
-    this.filter = new Tone.Filter(200, "lowpass")
+  constructor(initialState) {
+    this.filter = new Tone.Filter(20000, "lowpass")
     this.limiter = new Tone.Limiter(-10)
 
     this.masterBus = new Tone.Gain().chain(
@@ -13,24 +12,25 @@ class ToneSynth {
       Tone.Master
     )
 
-    this.drive = new Tone.Distortion(0.1).receive("drive").connect(this.masterBus)
-    this.chorus = new Tone.Chorus(4, 2.5, 0.5).receive("chorus").connect(this.masterBus)
-    this.delay = new Tone.FeedbackDelay("8n", 0.5).receive("delay").connect(this.masterBus)
-    this.reverb = new Tone.Freeverb().receive("reverb").connect(this.masterBus)
-
+    this.reverbNode = new Tone.Freeverb()
+    this.chorusNode = new Tone.Chorus(4, 2.5, 0.5)
+    this.driveNode = new Tone.Distortion(0.1)
+    this.delayNode = new Tone.FeedbackDelay("8n", 0.5)
     this.compressor = new Tone.Compressor(-24, 12)
 
-    this.polySynth = new Tone.PolySynth(12, Tone.DuoSynth).chain(
+    this.polySynth = new Tone.PolySynth(12, Tone.DuoSynth)
+
+    this.polySynth.chain(
       this.compressor,
+      this.reverbNode,
+      this.chorusNode,
+      this.driveNode,
+      this.delayNode,
       this.masterBus
     )
 
-    this.driveSendNode = this.polySynth.send("drive", -Infinity)
-    this.chorusSendNode = this.polySynth.send("chorus", -Infinity)
-    this.delaySendNode = this.polySynth.send("delay", -Infinity)
-    this.reverbSendNode = this.polySynth.send("reverb", -Infinity)
-
     this.createOscillatorSettingCallbacks()
+    this.initInitialSettings(initialState)
   }
 
   triggerAttackRelease(value, freq) {
@@ -39,7 +39,7 @@ class ToneSynth {
 
   // these are settings that do not apply to the N number of voices on the poly synthesizer
   static get TOP_LEVEL_SETTINGS() {
-    return ["driveSend", "chorusSend", "delaySend", "reverbSend", "volume", "filterCutoff", "filterQ", "filterType"]
+    return ["drive", "chorus", "delay", "reverb", "volume", "filterCutoff", "filterQ", "filterType"]
   }
 
   updateSetting(name, val) {
@@ -56,20 +56,21 @@ class ToneSynth {
     }
   }
 
-  driveSend(val) {
-    this.driveSendNode.gain.value = val
+  drive(val) {
+    this.driveNode.wet.value = val
   }
 
-  reverbSend(val) {
-    this.reverbSendNode.gain.value = val
+  reverb(val) {
+    this.reverbNode.wet.value = val
   }
 
-  delaySend(val) {
-    this.delaySendNode.gain.value = val
+  delay(val) {
+    this.delayNode.wet.value = val
   }
 
-  chorusSend(val) {
-    this.chorusSendNode.gain.value = val
+  chorus(val) {
+    console.log("ToneSynth.chorus", val)
+    this.chorusNode.wet.value = val
   }
 
   volume(val) {
@@ -86,7 +87,7 @@ class ToneSynth {
 
   // "lowpass", "highpass", "bandpass", "lowshelf", "highshelf", "notch", "allpass", or "peaking"
   filterType(val) {
-    this.filter.type.value = val
+    this.filter.type = val
   }
 
   vibratoAmount(voice, val) {
@@ -165,6 +166,19 @@ class ToneSynth {
     this[oscName + "VolumeEnvelopeRelease"] = (voice, val) => {
       voice[voiceName].envelope.release = val
     }
+  }
+
+  initInitialSettings(initialState) {
+    Object.keys(initialState).forEach((parentName) => {
+      if (parentName !== "sequencer") {
+        Object.keys(initialState[parentName]).forEach((settingName) => {
+          console.log(parentName, settingName)
+          console.log(initialState[parentName][settingName])
+          console.log(this)
+          this.updateSetting(settingName, initialState[parentName][settingName])
+        })
+      }
+    })
   }
 }
 
