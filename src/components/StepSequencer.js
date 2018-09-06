@@ -55,7 +55,7 @@ class ConnectedStepSequencer extends React.Component {
 
   initGlobalMouseListeners() {
     window.addEventListener("mouseup", (e) => {
-      this.props.globalMouseUp()
+      this.props.globalMouseUp(e)
     })
   }
 

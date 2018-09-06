@@ -105,13 +105,14 @@ const rootReducer = (state = initialState, action) => {
       return dotProp.set(state, "sequencer.mouseDown", action.payload)
 
     case GLOBAL_MOUSE_UP:
+      console.log(action.payload)
       return dotProp.set(state, "sequencer.mouseDown", null)
 
     case SEQUENCER_CELL_MOUSE_UP:
       console.log("mouse up", action.payload)
       return dotProp.merge(state,
         `sequencer.sequencerRows.${action.payload.rowNum}.${action.payload.cellNum}`,
-        { isActive: !action.payload.isActive })
+        { isActive: !dotProp.get(state, "sequencer.mouseDown").isActive })
 
     case SEQUENCER_CELL_MOUSE_OUT:
       let mouseDown = dotProp.get(state, "sequencer.mouseDown")

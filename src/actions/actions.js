@@ -90,10 +90,10 @@ export const sequencerCellMouseOut = props => {
   }
 }
 
-export const globalMouseUp = props => {
+export const globalMouseUp = evnt => {
   return {
     type: GLOBAL_MOUSE_UP,
-    payload: props
+    payload: evnt
   }
 }
 
