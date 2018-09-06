@@ -1,14 +1,22 @@
 import React from "react"
 import { connect } from "react-redux"
-import { setSequencerCell } from "../actions/actions"
 import { get } from "dot-prop-immutable"
+
+import {
+  setSequencerCell,
+  sequencerCellMouseDown,
+  sequencerCellMouseUp,
+  sequencerCellMouseOut
+} from "../actions/actions"
 
 class ConnectedSequencerCell extends React.Component {
 
   constructor(props) {
     super(props)
-    this.handleClick = this.handleClick.bind(this)
-    this.handleMouseOver = this.handleMouseOver.bind(this)
+
+    this.handleMouseOut = this.handleMouseOut.bind(this)
+    this.handleMouseDown = this.handleMouseDown.bind(this)
+    this.handleMouseUp = this.handleMouseUp.bind(this)
     this.setCell(false)
   }
 
@@ -30,18 +38,30 @@ class ConnectedSequencerCell extends React.Component {
     return names.join(" ")
   }
 
-  handleClick(e) {
-    this.toggleCell()
+  handleMouseDown(e) {
+    e.preventDefault()
+    this.props.sequencerCellMouseDown(this.mouseEventProps())
   }
 
-  handleMouseOver(e) {
-    if (e.buttons == 1 || e.buttons == 3) {
-      this.toggleCell()
-    }
+  handleMouseUp(e) {
+    e.preventDefault()
+    this.props.sequencerCellMouseUp(this.mouseEventProps())
+  }
+
+  handleMouseOut(e) {
+    this.props.sequencerCellMouseOut(this.mouseEventProps())
   }
 
   toggleCell() {
     this.setCell(!this.props.isActive) // invert current state
+  }
+
+  mouseEventProps() {
+    return {
+      rowNum: this.props.rowNum,
+      cellNum: this.props.cellNum,
+      isActive: this.props.isActive
+    }
   }
 
   setCell(isActive = false) {
@@ -56,7 +76,13 @@ class ConnectedSequencerCell extends React.Component {
 
   render() {
     return (
-      <button onMouseOver={this.handleMouseOver} onClick={this.handleClick} className={this.classNames()}></button>
+      <button
+        onMouseOut={this.handleMouseOut}
+        onMouseDown={this.handleMouseDown}
+        onMouseUp={this.handleMouseUp}
+        onClick={this.handleClick}
+        className={this.classNames()}
+      ></button>
     )
   }
 }
@@ -79,7 +105,10 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    setSequencerCell: cellProps => dispatch(setSequencerCell(cellProps))
+    sequencerCellMouseDown: props => (dispatch(sequencerCellMouseDown(props))),
+    sequencerCellMouseUp: props => (dispatch(sequencerCellMouseUp(props))),
+    sequencerCellMouseOut: props => (dispatch(sequencerCellMouseOut(props))),
+    setSequencerCell: props => dispatch(setSequencerCell(props))
   }
 }
 

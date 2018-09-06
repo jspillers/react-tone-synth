@@ -3,10 +3,8 @@ import PropTypes from 'prop-types'
 import { DropdownButton, MenuItem } from "react-bootstrap"
 import { render } from "react-dom"
 import { connect } from "react-redux"
-import { titleize } from "../helpers"
 import { changeFilterType } from "../actions/actions"
 import { get } from "dot-prop-immutable"
-import Envelope from "./Envelope"
 import Dial from "./Dial"
 
 class ConnectedFilter extends React.Component {

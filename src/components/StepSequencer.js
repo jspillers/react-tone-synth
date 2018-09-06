@@ -4,7 +4,14 @@ import Tone from 'tone'
 import { Glyphicon, Button } from "react-bootstrap"
 import { connect } from "react-redux"
 import { get } from "dot-prop-immutable"
-import { playPause, triggerColumn, bpmUpdate, clearAllCells } from "../actions/actions"
+
+import {
+  playPause,
+  triggerColumn,
+  bpmUpdate,
+  clearAllCells,
+  globalMouseUp
+} from "../actions/actions"
 
 class ConnectedStepSequencer extends React.Component {
   constructor(props) {
@@ -19,6 +26,7 @@ class ConnectedStepSequencer extends React.Component {
 
     this.createSequence()
     this.initSpaceBarStartStop()
+    this.initGlobalMouseListeners()
   }
 
   handleStartStop(event) {
@@ -43,6 +51,12 @@ class ConnectedStepSequencer extends React.Component {
         this.toggleStartStop()
       }
     }
+  }
+
+  initGlobalMouseListeners() {
+    window.addEventListener("mouseup", (e) => {
+      this.props.globalMouseUp()
+    })
   }
 
   handleBpmUpdate(event) {
@@ -137,7 +151,8 @@ const mapDispatchToProps = dispatch => {
     playPause: props => dispatch(playPause(props)),
     triggerColumn: columnIndex => dispatch(triggerColumn(columnIndex)),
     bpmUpdate: val => dispatch(bpmUpdate(val)),
-    clearAllCells: _ => dispatch(clearAllCells())
+    clearAllCells: _ => dispatch(clearAllCells()),
+    globalMouseUp: _ => dispatch(globalMouseUp())
   }
 }
 

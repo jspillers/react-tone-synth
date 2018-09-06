@@ -50,7 +50,7 @@ class ToneSynth {
         if (this[name] !== undefined) {
           this[name](voice, val) // voice should be an instance of the synth used (DuoSynth)
         } else {
-          throw `${name} does not have a valid setting function defined`
+          throw new Error(`${name} does not have a valid setting function defined`)
         }
       })
     }
@@ -127,7 +127,6 @@ class ToneSynth {
     }
 
     this[oscName + "FilterCutoff"] = (voice, val) => {
-      console.log(val)
       voice[voiceName].filter.frequency.value = val
     }
 
@@ -172,9 +171,6 @@ class ToneSynth {
     Object.keys(initialState).forEach((parentName) => {
       if (parentName !== "sequencer") {
         Object.keys(initialState[parentName]).forEach((settingName) => {
-          console.log(parentName, settingName)
-          console.log(initialState[parentName][settingName])
-          console.log(this)
           this.updateSetting(settingName, initialState[parentName][settingName])
         })
       }

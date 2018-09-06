@@ -4,7 +4,7 @@ import { render } from "react-dom"
 import { connect } from "react-redux"
 // https://www.npmjs.com/package/react-rotary-knob
 import { Knob } from "react-rotary-knob"
-import * as skins from "react-rotary-knob-skin-pack"
+import s8 from "../vendor/rotary-knob-skins/s8"
 import { changeDial } from "../actions/actions"
 import { get } from "dot-prop-immutable"
 
@@ -45,7 +45,7 @@ class ConnectedDial extends React.Component {
       <div id={this.idName} className="dial">
         <Knob
           style={this.knobStyle}
-          skin={skins.s8}
+          skin={s8}
           value={this.dialValue}
           onChange={this.handleChange}
           min={this.minValue}

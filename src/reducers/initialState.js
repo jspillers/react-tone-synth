@@ -57,6 +57,7 @@ const initialState = {
     oscillator2VolumeEnvelopeRelease: 1.0
   },
   sequencer: {
+    mouseDown: null,
     isPlaying: false,
     bpm: 100,
     sequencerRows: []

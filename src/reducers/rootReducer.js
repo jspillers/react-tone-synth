@@ -6,7 +6,11 @@ import {
   SEQUENCER_START_STOP,
   SEQUENCER_TRIGGER_COLUMN,
   BPM_UPDATE,
-  CLEAR_ALL_CELLS
+  CLEAR_ALL_CELLS,
+  SEQUENCER_CELL_MOUSE_DOWN,
+  SEQUENCER_CELL_MOUSE_UP,
+  SEQUENCER_CELL_MOUSE_OUT,
+  GLOBAL_MOUSE_UP
 } from "../constants/action-types"
 
 import * as dotProp from "dot-prop-immutable"
@@ -95,6 +99,31 @@ const rootReducer = (state = initialState, action) => {
           cell.isActive = false
         })
       )
+
+    case SEQUENCER_CELL_MOUSE_DOWN:
+      console.log("mouse down", action.payload)
+      return dotProp.set(state, "sequencer.mouseDown", action.payload)
+
+    case GLOBAL_MOUSE_UP:
+      return dotProp.set(state, "sequencer.mouseDown", null)
+
+    case SEQUENCER_CELL_MOUSE_UP:
+      console.log("mouse up", action.payload)
+      return dotProp.merge(state,
+        `sequencer.sequencerRows.${action.payload.rowNum}.${action.payload.cellNum}`,
+        { isActive: !action.payload.isActive })
+
+    case SEQUENCER_CELL_MOUSE_OUT:
+      let mouseDown = dotProp.get(state, "sequencer.mouseDown")
+
+      if (mouseDown !== null) {
+        console.log(!mouseDown.isActive)
+        return dotProp.set(state,
+          `sequencer.sequencerRows.${action.payload.rowNum}.${action.payload.cellNum}`,
+          { isActive: !mouseDown.isActive })
+      } else {
+        return state
+      }
 
     default:
       return state

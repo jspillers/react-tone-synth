@@ -6,7 +6,11 @@ import {
   SEQUENCER_START_STOP,
   SEQUENCER_TRIGGER_COLUMN,
   BPM_UPDATE,
-  CLEAR_ALL_CELLS
+  CLEAR_ALL_CELLS,
+  SEQUENCER_CELL_MOUSE_DOWN,
+  SEQUENCER_CELL_MOUSE_UP,
+  SEQUENCER_CELL_MOUSE_OUT,
+  GLOBAL_MOUSE_UP
 } from "../constants/action-types"
 
 export const changeDial = dial => {
@@ -64,3 +68,32 @@ export const clearAllCells = () => {
     payload: {}
   }
 }
+
+export const sequencerCellMouseDown = props => {
+  return {
+    type: SEQUENCER_CELL_MOUSE_DOWN,
+    payload: props
+  }
+}
+
+export const sequencerCellMouseUp = props => {
+  return {
+    type: SEQUENCER_CELL_MOUSE_UP,
+    payload: props
+  }
+}
+
+export const sequencerCellMouseOut = props => {
+  return {
+    type: SEQUENCER_CELL_MOUSE_OUT,
+    payload: props
+  }
+}
+
+export const globalMouseUp = props => {
+  return {
+    type: GLOBAL_MOUSE_UP,
+    payload: props
+  }
+}
+

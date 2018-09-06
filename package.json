@@ -2,6 +2,7 @@
   "name": "tone-synth",
   "version": "0.1.0",
   "private": true,
+  "homepage" : "http://jarrodspillers.com/react-tone-synth",
   "dependencies": {
     "bootstrap": "^3.3.7",
     "dot-prop-immutable": "^1.4.0",
