@@ -55,6 +55,10 @@ body {
 #step-sequencer {
   padding: 0 15px;
 
+  .sequencerRows {
+    height: 24px;
+  }
+
   .sequencer-cell:focus{
     outline: none;
   }

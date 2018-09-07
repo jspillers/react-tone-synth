@@ -56,7 +56,8 @@ const rootReducer = (state = initialState, action) => {
       )
 
     case CHANGE_FILTER_TYPE:
-      console.log(action.payload)
+      synth.updateSetting("filterType", action.payload)
+
       return dotProp.set(state, "filter.filterType", action.payload)
 
     case SEQUENCER_SET_CELL:
@@ -77,9 +78,15 @@ const rootReducer = (state = initialState, action) => {
 
           if (action.payload === ci) {
             cell.isHighlighted = true
-            if (cell.isActive) {
+            if (cell.isActive && cell.note && cell.octave) {
               //console.log(cell.note + cell.octave)
-              synth.triggerAttackRelease(cell.note + cell.octave, "16n")
+              try {
+                synth.triggerAttackRelease(cell.note + cell.octave, "16n")
+              } catch (err) {
+                console.log("cell.note", cell.note)
+                console.log("cell.octave", cell.octave)
+                console.log(err)
+              }
             }
           } else {
             rows[rowKey][colKey].isHighlighted = false
@@ -119,7 +126,7 @@ const rootReducer = (state = initialState, action) => {
 
       if (mouseDown !== null) {
         console.log(!mouseDown.isActive)
-        return dotProp.set(state,
+        return dotProp.merge(state,
           `sequencer.sequencerRows.${action.payload.rowNum}.${action.payload.cellNum}`,
           { isActive: !mouseDown.isActive })
       } else {
