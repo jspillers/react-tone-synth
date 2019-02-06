@@ -1,25 +1,71 @@
 import React, { Component } from 'react';
-import Synth from "./components/Synth"
+import { connect } from "react-redux"
+import MonoSynth from "./components/MonoSynth"
+import DuoSynth from "./components/DuoSynth"
+import AMSynth from "./components/AMSynth"
+import FMSynth from "./components/FMSynth"
+import MembraneSynth from "./components/MembraneSynth"
+import MetalSynth from "./components/MetalSynth"
+import NoiseSynth from "./components/NoiseSynth"
+import PluckSynth from "./components/PluckSynth"
 import StepSequencer from "./components/StepSequencer"
-import { Button, Modal } from "react-bootstrap"
+import { Button, ToggleButtonGroup, ToggleButton } from "react-bootstrap"
+import { changeSynth } from "./actions/actions"
+import { get } from "dot-prop-immutable"
 import logo from './logo.svg';
 import './App.css';
 
-class App extends Component {
+class ConnectedApp extends Component {
 
-  constructor(props, context) {
-    super(props, context);
-    this.handleWhatsThisClose = this.handleWhatsThisClose.bind(this)
-    this.handleWhatsThisOpen = this.handleWhatsThisOpen.bind(this)
-    this.state = { showWhatsThisModal: false };
+  constructor(props) {
+    super(props)
+    this.handleSynthSelectChange = this.handleSynthSelectChange.bind(this)
   }
 
-  handleWhatsThisOpen() {
-    this.setState({ showWhatsThisModal: true })
+  handleSynthSelectChange(vals) {
+    this.props.changeSynth(vals[1])
   }
 
-  handleWhatsThisClose() {
-    this.setState({ showWhatsThisModal: false })
+  synthTypes() {
+    return [
+      "DuoSynth",
+      "MonoSynth",
+      "AMSynth",
+      "FMSynth",
+      "MembraneSynth",
+      "MetalSynth",
+      "NoiseSynth",
+      "PluckSynth"
+    ]
+  }
+
+  synthToggleButtons() {
+    return this.synthTypes().map((type) => {
+      return(<ToggleButton key={type} value={type}>{type}</ToggleButton>)
+    })
+  }
+
+  currentSynth() {
+    switch(this.props.currentSynth) {
+      case "DuoSynth":
+        return(<DuoSynth />)
+      case "MonoSynth":
+        return(<MonoSynth />)
+      case "AMSynth":
+        return(<AMSynth />)
+      case "FMSynth":
+        return(<FMSynth />)
+      case "MembraneSynth":
+        return(<MembraneSynth />)
+      case "MetalSynth":
+        return(<MetalSynth />)
+      case "NoiseSynth":
+        return(<NoiseSynth />)
+      case "PluckSynth":
+        return(<PluckSynth />)
+      default:
+        return(<DuoSynth />)
+    }
   }
 
   render() {
@@ -29,34 +75,37 @@ class App extends Component {
           <div className="col-sm-12 main">
             <header className="App-header">
               <img src={logo} className="App-logo" alt="logo" />
-              <h1 className="App-title">
-                React Tone Synth
-                <Button
-                  bsSize="xsmall"
-                  onClick={this.handleWhatsThisOpen}
-                >What is this?</Button>
-              </h1>
+              <div className="synth-select">
+                <ToggleButtonGroup
+                  type="checkbox"
+                  value={this.props.currentSynth}
+                  onChange={this.handleSynthSelectChange}
+                >
+                  {this.synthToggleButtons()}
+                </ToggleButtonGroup>
+              </div>
             </header>
             <div className="tone-synth">
-              <Synth />
+              {this.currentSynth()}
               <StepSequencer />
             </div>
           </div>
         </div>
-        <div className="static-modal">
-          <Modal show={this.state.showWhatsThisModal}>
-            <Modal.Header>
-              <Modal.Title>Modal title</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>One fine body...</Modal.Body>
-            <Modal.Footer>
-              <Button onClick={this.handleWhatsThisClose}>Close</Button>
-            </Modal.Footer>
-          </Modal>
-        </div>
       </div>
-    );
+    )
   }
 }
+
+const mapStateToProps = (state, ownProps) => {
+  return { currentSynth: get(state, "sequencer.currentSynth") }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    changeSynth: synthName => dispatch(changeSynth(synthName))
+  }
+}
+
+const App = connect(mapStateToProps, mapDispatchToProps)(ConnectedApp)
 
 export default App

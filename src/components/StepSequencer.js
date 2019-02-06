@@ -1,7 +1,7 @@
 import React from "react"
 import SequencerRow from "./SequencerRow"
 import Tone from 'tone'
-import { Glyphicon, Button } from "react-bootstrap"
+import { Glyphicon, Modal, Button } from "react-bootstrap"
 import { connect } from "react-redux"
 import { get } from "dot-prop-immutable"
 
@@ -17,9 +17,13 @@ class ConnectedStepSequencer extends React.Component {
   constructor(props) {
     super(props)
 
+    this.state = { showWhatsThisModal: false }
+
     this.handleStartStop = this.handleStartStop.bind(this)
     this.handleBpmUpdate = this.handleBpmUpdate.bind(this)
     this.handleClearAllCells = this.handleClearAllCells.bind(this)
+    this.handleWhatsThisClose = this.handleWhatsThisClose.bind(this)
+    this.handleWhatsThisOpen = this.handleWhatsThisOpen.bind(this)
 
     this.rowLength = 32 // how many beats?
     this.rowsCount = 12 // 1 octave
@@ -27,6 +31,14 @@ class ConnectedStepSequencer extends React.Component {
     this.createSequence()
     this.initSpaceBarStartStop()
     this.initGlobalMouseListeners()
+  }
+
+  handleWhatsThisOpen() {
+    this.setState({ showWhatsThisModal: true })
+  }
+
+  handleWhatsThisClose() {
+    this.setState({ showWhatsThisModal: false })
   }
 
   handleStartStop(event) {
@@ -125,14 +137,30 @@ class ConnectedStepSequencer extends React.Component {
               </div>
             </div>
             <div className="clearCells row">
-              <button onClick={this.handleClearAllCells} className="btn-clear-all btn btn-warning">
+              <Button onClick={this.handleClearAllCells} className="btn-clear-all btn btn-warning">
                 Clear All
-              </button>
+              </Button>
             </div>
             <div className="playPause row">
               {this.playPauseButton()}
             </div>
+            <div className="row">
+              <Button onClick={this.handleWhatsThisOpen} className="btnWhatIsThis btn">
+                What is this?
+              </Button>
+            </div>
           </form>
+        </div>
+        <div className="static-modal">
+          <Modal show={this.state.showWhatsThisModal}>
+            <Modal.Header>
+              <Modal.Title>Modal title</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>One fine body...</Modal.Body>
+            <Modal.Footer>
+              <Button onClick={this.handleWhatsThisClose}>Close</Button>
+            </Modal.Footer>
+          </Modal>
         </div>
       </div>
     )

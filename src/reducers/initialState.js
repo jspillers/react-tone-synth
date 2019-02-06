@@ -57,6 +57,7 @@ const initialState = {
     oscillator2VolumeEnvelopeRelease: 1.0
   },
   sequencer: {
+    currentSynth: "DuoSynth",
     mouseDown: null,
     isPlaying: false,
     bpm: 100,

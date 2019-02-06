@@ -4,8 +4,8 @@ import Filter from "./Filter"
 import Oscillator from "./Oscillator"
 import Master from "./Master"
 
-const Synth = () => (
-  <div id="tone-synth">
+const DuoSynth = () => (
+  <div id="duo-synth">
     <div className="row">
       <div className="col-md-6">
         <Oscillator name={"oscillator1"} displayName={"Oscillator 1"} />
@@ -28,4 +28,4 @@ const Synth = () => (
   </div>
 )
 
-export default Synth
+export default DuoSynth

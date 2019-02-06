@@ -1,4 +1,5 @@
 import {
+  CHANGE_SYNTH,
   CHANGE_DIAL,
   CHANGE_WAVEFORM,
   CHANGE_FILTER_TYPE,
@@ -18,7 +19,10 @@ import initialState from "./initialState"
 import Tone from "tone"
 import ToneSynth from "../synth/ToneSynth"
 
-const synth = new ToneSynth(initialState)
+const synth = new ToneSynth(initialState, Tone.DuoSynth)
+
+synth.triggerAttackRelease('C4', '4n', '8n')
+synth.triggerAttackRelease('E4', '8n', Tone.Time('4n') + Tone.Time('8n'))
 
 // copies the sequencer cell state, iterates through the copy of all sequencer cells,
 // and potentially alters the state of each cell based on the contents/behavior of `func`
@@ -37,6 +41,9 @@ const forAllCells = (state, func) => {
 
 const rootReducer = (state = initialState, action) => {
   switch(action.type) {
+    case CHANGE_SYNTH:
+      return dotProp.set(state, "sequencer.currentSynth", action.payload)
+
     case CHANGE_DIAL:
       synth.updateSetting(action.payload.name, action.payload.dialValue)
 
@@ -108,15 +115,15 @@ const rootReducer = (state = initialState, action) => {
       )
 
     case SEQUENCER_CELL_MOUSE_DOWN:
-      console.log("mouse down", action.payload)
+      //console.log("mouse down", action.payload)
       return dotProp.set(state, "sequencer.mouseDown", action.payload)
 
     case GLOBAL_MOUSE_UP:
-      console.log(action.payload)
+      //console.log(action.payload)
       return dotProp.set(state, "sequencer.mouseDown", null)
 
     case SEQUENCER_CELL_MOUSE_UP:
-      console.log("mouse up", action.payload)
+      //console.log("mouse up", action.payload)
       return dotProp.merge(state,
         `sequencer.sequencerRows.${action.payload.rowNum}.${action.payload.cellNum}`,
         { isActive: !dotProp.get(state, "sequencer.mouseDown").isActive })
@@ -125,7 +132,7 @@ const rootReducer = (state = initialState, action) => {
       let mouseDown = dotProp.get(state, "sequencer.mouseDown")
 
       if (mouseDown !== null) {
-        console.log(!mouseDown.isActive)
+        //console.log(!mouseDown.isActive)
         return dotProp.merge(state,
           `sequencer.sequencerRows.${action.payload.rowNum}.${action.payload.cellNum}`,
           { isActive: !mouseDown.isActive })
@@ -135,7 +142,6 @@ const rootReducer = (state = initialState, action) => {
 
     default:
       return state
-
   }
 }
 

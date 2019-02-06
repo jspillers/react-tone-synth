@@ -1,4 +1,5 @@
 import {
+  CHANGE_SYNTH,
   CHANGE_DIAL,
   CHANGE_WAVEFORM,
   CHANGE_FILTER_TYPE,
@@ -12,6 +13,13 @@ import {
   SEQUENCER_CELL_MOUSE_OUT,
   GLOBAL_MOUSE_UP
 } from "../constants/action-types"
+
+export const changeSynth = synthName => {
+  return {
+    type: CHANGE_SYNTH,
+    payload: synthName
+  }
+}
 
 export const changeDial = dial => {
   return {

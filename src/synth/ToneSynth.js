@@ -2,7 +2,7 @@ import Tone from "tone"
 
 class ToneSynth {
 
-  constructor(initialState) {
+  constructor(initialState, synthType) {
     this.filter = new Tone.Filter(20000, "lowpass")
     this.limiter = new Tone.Limiter(-10)
 
@@ -18,9 +18,9 @@ class ToneSynth {
     this.delayNode = new Tone.FeedbackDelay("8n", 0.5)
     this.compressor = new Tone.Compressor(-24, 12)
 
-    this.polySynth = new Tone.PolySynth(12, Tone.DuoSynth)
+    this.synth = new Tone.PolySynth(12, synthType)
 
-    this.polySynth.chain(
+    this.synth.chain(
       this.compressor,
       this.reverbNode,
       this.chorusNode,
@@ -34,7 +34,7 @@ class ToneSynth {
   }
 
   triggerAttackRelease(value, freq) {
-    this.polySynth.triggerAttackRelease(value, freq)
+    this.synth.triggerAttackRelease(value, freq)
   }
 
   // these are settings that do not apply to the N number of voices on the poly synthesizer
@@ -46,7 +46,7 @@ class ToneSynth {
     if (this.constructor.TOP_LEVEL_SETTINGS.includes(name)) {
       this[name](val)
     } else {
-      this.polySynth.voices.forEach(voice => {
+      this.synth.voices.forEach(voice => {
         if (this[name] !== undefined) {
           this[name](voice, val) // voice should be an instance of the synth used (DuoSynth)
         } else {
@@ -69,7 +69,6 @@ class ToneSynth {
   }
 
   chorus(val) {
-    console.log("ToneSynth.chorus", val)
     this.chorusNode.wet.value = val
   }
 
