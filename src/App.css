@@ -1,0 +1,112 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 40vmin;
+  pointer-events: none;
+}
+
+.App-header {
+  background-color: #282c34;
+  height: 260px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-header .synth-select {
+  margin-bottom: 20px;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif; }
+
+.App.container {
+  width: 970px; }
+
+.synth-section {
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #efefef;
+  background: white;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, white 0%, #e5e5e5 100%);
+  /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, white 0%, #e5e5e5 100%);
+  /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, white 0%, #e5e5e5 100%);
+  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e5e5e5',GradientType=0 );
+  /* IE6-9 */ }
+
+.dial {
+  margin: 0 auto; }
+  .dial label {
+    font-size: 12px;
+    text-align: center; }
+
+.waveform-select {
+  padding: 10px 0 20px 0; }
+  .waveform-select h5 {
+    text-align: right; }
+  .waveform-select label {
+    display: block; }
+
+.envelope {
+  border: 1px solid #fff;
+  margin: 10px 0;
+  padding-top: 10px; }
+  .envelope h5 {
+    text-align: right; }
+
+.waveform-item {
+  text-align: center; }
+
+#step-sequencer {
+  padding: 0 15px; }
+  #step-sequencer .sequencerRows {
+    height: 24px; }
+  #step-sequencer .sequencer-cell:focus {
+    outline: none; }
+  #step-sequencer .sequencer-cell:hover {
+    background-color: #d8ffc1 !important; }
+  #step-sequencer .sequencer-cell {
+    border: 1px solid #999;
+    width: 24px;
+    height: 24px; }
+  #step-sequencer .sequencer-cell.active {
+    background-color: #a0ffdd; }
+  #step-sequencer .sequencer-cell.highlighted {
+    background-color: #d8ffc1; }
+  #step-sequencer .sequencer-cell.highlighted.active {
+    background-color: #a4ff70; }
+  #step-sequencer .sequencer-cell.downbeat {
+    border-left: 1px solid black; }
+  #step-sequencer button.btn-play-pause, #step-sequencer button.btn-clear-all {
+    width: 100%;
+    margin-bottom: 10px; }
+  #step-sequencer button.btn-play-pause:focus {
+    outline: none; }
+
+.filter #filterType {
+  margin-top: 10px; }

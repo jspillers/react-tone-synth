@@ -9,7 +9,7 @@ import MetalSynth from "./components/MetalSynth"
 import NoiseSynth from "./components/NoiseSynth"
 import PluckSynth from "./components/PluckSynth"
 import StepSequencer from "./components/StepSequencer"
-import { Button, ToggleButtonGroup, ToggleButton } from "react-bootstrap"
+import { ToggleButtonGroup, ToggleButton } from "react-bootstrap"
 import { changeSynth } from "./actions/actions"
 import { get } from "dot-prop-immutable"
 import logo from './logo.svg';
